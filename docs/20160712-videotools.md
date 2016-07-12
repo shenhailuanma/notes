@@ -6,6 +6,7 @@ ffmpeg, eavlvid
 其实只使用了psnr，编译的时候，用“make psnr”即可。
 
 psnr命令行使用方法： psnr  x  y  <YUV format>  <src.yuv>  <dst.yuv> [multiplex]  [ssim] 
+
 ![psnr使用方法图](../images/20160712-videotools-01.png)
 
 例如： ./psnr 1920 1080 420 haoshengyin_420.yuv qsv-1080p.yuv ssim > qsv_ssim.csv
@@ -30,7 +31,7 @@ psnr命令行使用方法： psnr  x  y  <YUV format>  <src.yuv>  <dst.yuv> [mul
 传入参数： 源YUV文件路径， YUV比对数据路径， 编码方式（软编或硬编）， 码率， GOP值， preset,  profile
 
 ## 附代码：
-```python
+```shell
 
 #!/bin/bash
 

@@ -9,7 +9,7 @@ ffmpeg, eavlvid
 
 psnr命令行使用方法： psnr  x  y  <YUV format>  <src.yuv>  <dst.yuv> [multiplex]  [ssim] 
 
-![psnr使用方法图](../images/20160712-videotools-01.png)
+![psnr使用方法图](https://raw.githubusercontent.com/shenhailuanma/notes/master/images/20160712-videotools-01.png)
 
 例如： ./psnr 1920 1080 420 haoshengyin_420.yuv qsv-1080p.yuv ssim > qsv_ssim.csv
 

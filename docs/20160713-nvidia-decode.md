@@ -16,14 +16,8 @@
 　　总的来说，nvidia提供了source, parser, decoder三个基本模块。其中source是用来解析视频文件(例如：纯h.264文件)，parser是用来解析视频并得到一帧帧的数据，decoder就是解码了。
 
 
-```sequence
-source-->parser: h.264数据
-parser-->pfnSequenceCallback: 视频格式参数
-parser-->pfnDecodePicture: 视频帧内部封装
-pfnDecodePicture-->decoder: 视频帧内部封装
-parser-->pfnDisplayPicture: YUV数据内部封装数据
+![流程图](https://raw.githubusercontent.com/shenhailuanma/notes/master/images/20160713-nvidia-decode-01.png)
 
-```
 
 　　这三个模块相辅相成，其主要操作流程如上图所示。source模块输出h264数据，parser解析这些h264数据，并通过3个重要的回调函数（pfnSequenceCallback， pfnDecodePicture， pfnDisplayPicture）完成解码及输出功能。其中，pfnSequenceCallback是parser解析到序列及图像参数信息时的回调函数，其传入的参数是parser解析好的视频参数，可以用于初始化解码器或重置解码器。pfnDecodePicture是parser解析到视频编码数据后的回调函数，其传入的参数parser处理好待解码的视频编码数据，需要在该函数中调用decoder的接口进行解码操作。pfnDisplayPicture是parser对解码后的数据处理的回调函数，可以在该回调中对已解码的数据进行获取（从显存到系统内存）并处理。
 

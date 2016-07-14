@@ -17,7 +17,6 @@
 
 
 ```sequence
-title: 流程图
 source-->parser: h.264数据
 parser-->pfnSequenceCallback: 视频格式参数
 parser-->pfnDecodePicture: 视频帧内部封装
@@ -100,7 +99,39 @@ parser-->pfnDisplayPicture: YUV数据内部封装数据
 
 #### 4.技术点说明
 
-##### 
+##### 库的使用
+　　nvidia解码需要使用cuda和nvcuvid两个库(在linux中是libcuda.so和libnvcuvid.so)，使用的时候要加载它们，并使用其中一些接口。主要使用到的接口主要有：
+```c
+    cuInit
+    cuDeviceGetCount
+    cuDeviceGet
+    cuDeviceGetName
+    cuDeviceComputeCapability
+    cuCtxCreate
+    cuCtxPushCurrent
+    cuCtxPopCurrent
+    cuCtxDestroy
+    cuMemAllocHost
+    cuMemFreeHost
+    cuStreamCreate
+    cuStreamDestroy
+    cuMemcpyDtoHAsync
+    cuvidCreateDecoder
+    cuvidDestroyDecoder
+    cuvidDecodePicture
+    cuvidCtxLockCreate
+    cuvidCtxLockDestroy
+    cuvidCtxLock
+    cuvidCtxUnlock
+    cuvidMapVideoFrame
+    cuvidUnmapVideoFrame
+    cuvidCreateVideoParser
+    cuvidParseVideoData
+    cuvidDestroyVideoParser
+```
+> 注意：根据库的版本不同，接口有的需要使用v2版本。例如：cuCtxCreate和cuCtxCreate_v2。
+
+##### device内存和system内存
+　　使用nvidia进行硬件解码需要了解一下device内存（可以叫显存或设备内存）和系统内存的数据处理方法。在解码完成后，视频YUV数据是在device内存中的，所以需要使用nvidia提供的接口把数据弄出来。涉及的接口主要有：cuMemAllocHost, cuMemFreeHost, cuvidMapVideoFrame, cuvidUnmapVideoFrame, cuMemcpyDtoHAsync。其中，cuMemAllocHost是用来创建系统及显卡都可访问的系统内存。cuvidMapVideoFrame可以获取到设备内存中指定的YUV数据地址。最后通过cuMemcpyDtoHAsync将设备内存中指定的数据copy到系统内存中。
 
 
-#### 5.向ffmpeg中增加解码器

@@ -7,7 +7,6 @@
 ### 1.使用"**nvidia-smi**"查看GPU状态信息
 　　通常安装好nvidia驱动程序后会自动安装好nvidia-smi，使用nvidia-smi是最简单直接的查看GPU状态信息的方法。
 
-nvidia-smi -a
 
 直接运行"nvidia-smi"，就可以查看当前的运行状态。可以查看到GPU的各个核心的工作状态、温度、内存信息、及使用GPU的进程信息等。
 ```bash

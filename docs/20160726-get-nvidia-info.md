@@ -66,7 +66,7 @@
 
 API文档：http://docs.nvidia.com/deploy/pdf/NVML_API_Reference_Guide.pdf
 
-最后，简单暴力的附上代码（https://github.com/shenhailuanma/selfTestCode/blob/master/getNvidiaInfo/vn_info.c）：
+最后，简单暴力的附上代码:https://github.com/shenhailuanma/selfTestCode/blob/master/getNvidiaInfo/vn_info.c
 ```
 #include <stdio.h>
 #include <stdint.h>

@@ -42,6 +42,15 @@ cond(yes)->e
 cond(no)->op
 ```
 
+### 有道云笔记的流程图方法
+```
+graph TB
+    A{START} --> B(DO)
+    B --> C[OTHER]
+    C --> D{OVER}
+```
+
+
 以及时序图:
 
 ```sequence

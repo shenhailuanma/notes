@@ -1,4 +1,4 @@
-#### 时间戳重建机制
+#### 一个时间戳重建机制
 
 ##### 场景介绍
 在实际的音视频时间戳处理中，有时候会遇到时间戳异常的问题，比如：时间戳跨度太大，或时间戳非单调递增。
@@ -21,7 +21,28 @@
 下面的代码片段是我在实际使用中实现的时间戳重建机制。利用它可以将接收到的不稳定的时间戳重建成单调递增且同步。
 
 ```c
-static int rebuild_timestamp(AVFormatContext *avctx, struct memory_info2 * m_info, int64_t * out_pts, int64_t * out_dts)
+#define SMEM_MAX_STREAM     64
+#define SMEM_TIME_BASE      1000000
+#define SMEM_TIME_BASE_Q    (AVRational){1, SMEM_TIME_BASE}
+
+#define SMEM_NUM_IN_RANGE(n,min,max)  ((n) > (max) ? (max) : ((n) < (min) ? (min) : (n)))
+#define SMEM_NUM_IF_OUT_RANGE(n,min,max)  ((n) > (max) ? 1 : ((n) < (min) ? 1 : 0))
+
+typedef struct smem_dec_ctx {
+    const AVClass *class;
+
+    // for timestamp
+    int       base_stream_start;
+    int64_t   out_index; // the stream index of the out timestamp base used
+    int64_t   last_out_ts[SMEM_MAX_STREAM]; // the last out ts for each stream,timebase={1, 1000000}
+    int64_t   last_in_ts[SMEM_MAX_STREAM]; // the last in ts for each stream
+    int64_t   first_in_ts[SMEM_MAX_STREAM];
+    int should_duration[SMEM_MAX_STREAM];
+    AVRational in_timebase[SMEM_MAX_STREAM];
+
+}smem_dec_ctx;
+
+static int rebuild_timestamp(AVFormatContext *avctx, struct memory_info * m_info, int64_t * out_pts, int64_t * out_dts)
 {
     struct smem_dec_ctx * ctx = avctx->priv_data;
 
